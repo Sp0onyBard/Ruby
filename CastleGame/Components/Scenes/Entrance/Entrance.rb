@@ -1,9 +1,10 @@
+#Load item files
 require_relative 'Items/Gate.rb'
 require_relative 'Items/Wall.rb'
 require_relative 'Items/SleepyGuard.rb'
 
-class Entrance < Scene
-  def initialize
+class Entrance < Scene 
+  def initialize #Set items, adjacency, and description
     gate = Gate.new
     wall = Wall.new
     sg = SleepyGuard.new
@@ -16,8 +17,8 @@ class Entrance < Scene
     @items.push(sg)
   end
 
-  def use(dest, used)
-    ret = false
+  def use(dest, used) #If the player uses the grappling hook on the wall,
+    ret = false       #add the foyer scene to the list of adjacent scenes
     if dest == 'wall'
       if used == 'grappling-hook'
         @adjacent.push('foyer')

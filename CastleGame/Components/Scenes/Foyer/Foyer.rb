@@ -1,8 +1,9 @@
+#Load item files
 require_relative 'Items/Armor.rb'
 require_relative 'Items/FPaintings.rb'
 
 class Foyer < Scene
-  def initialize
+  def initialize #Set items, adjacency, and description
     @name = 'foyer'
     @adjacent = ['dungeon', 'throne-room', 'dining-hall', 'entrance', 'library']
     @failCase = false

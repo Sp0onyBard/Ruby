@@ -1,9 +1,10 @@
+#Load item files
 require_relative 'Items/SleepingGuard.rb'
 require_relative 'Items/Bookcase.rb'
 require_relative 'Items/Desk.rb'
 
 class Library < Scene
-  def initialize
+  def initialize #Set items, adjacency, and description
     @name = 'library'
     @description = 'The walls are lined with BOOKCASEs. A DESK is placed to the right, in front of a window. A GUARD is snoring away in a cushioned chair in the middle of the room.'
     @failCase = true
@@ -17,8 +18,8 @@ class Library < Scene
     addOb(d)
   end
 
-  def checkFail
-    guard = getObject('guard')
+  def checkFail #If the player awakens the guard(triggered by examining and 
+    guard = getObject('guard') #waking), trigger a game over.
     guard.awoken
   end
   

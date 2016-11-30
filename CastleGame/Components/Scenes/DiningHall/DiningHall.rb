@@ -1,9 +1,10 @@
+#Load item files
 require_relative 'Items/Flowers.rb'
 require_relative 'Items/Dining.rb'
 require_relative 'Items/DPaintings.rb'
 
 class DiningHall < Scene
-  def initialize
+  def initialize #Set up items, adjacency, and description.
     @name = 'dining-hall'
     @items = Array.new
     @adjacent = Array.new
@@ -18,8 +19,8 @@ class DiningHall < Scene
     @failCase = true
   end
 
-  def checkFail
-    forks = getObject('diningware')
+  def checkFail #If player has taken too many of the diningware object,
+    forks = getObject('diningware') #trigger a game over.
     forks.number <= 0
   end
 

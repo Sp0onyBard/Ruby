@@ -1,12 +1,13 @@
+#Load item files
 require_relative 'Items/CCarlin.rb'
 require_relative 'Items/MMacall.rb'
 require_relative 'Items/NNate.rb'
 require_relative 'Items/DGuard.rb'
 require_relative 'Items/Door.rb'
 
-class Dungeon < Scene
-  attr_accessor :flattered
-  def initialize
+class Dungeon < Scene #Initially, only a guard is available for the player to 
+  attr_accessor :flattered #interact with. flattered field dictates whether 
+  def initialize           #or not player has knocked out guard.
     @name = 'dungeon'
     @description = 'A GUARD stands in front of you.'
     @items = Array.new
@@ -17,8 +18,8 @@ class Dungeon < Scene
     @failCase = false
   end
 
-  def give(rec, item)
-    ret = false
+  def give(rec, item) #Once the player has knocked out the guard, add rest 
+    ret = false       #of the scene elements.
     if !@flattered
       if rec == 'guard'
         if item == 'flowers'

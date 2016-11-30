@@ -3,4 +3,10 @@ was largely based on James Nutt's book "Make Your First Text Adventure in Ruby":
 https://jsrn.gitbooks.io/make-your-first-text-adventure-in-ruby/content/
 
 The player moves through a castle to collect items, an interacts with the
-surrounding via short commands, such as move, examine, or use. 
+surrounding via short commands, such as move, examine, or use.
+Some examples of this:
+examine door
+give guard key
+use key lock
+
+Names of items to be passed as arguments are capitalized.

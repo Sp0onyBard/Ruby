@@ -1,3 +1,4 @@
+#Loading files here
 load 'Components/Abstracts/Scenes.rb'
 load 'Components/Abstracts/Items.rb'
 load 'Components/Abstracts/Player.rb'
@@ -17,7 +18,7 @@ load 'Components/KeyItems/TreasureChest.rb'
 
 
 class CastleGame
-  def initialize
+  def initialize #Initialize scenes and player object
     en = Entrance.new
     f = Foyer.new
     tr = ThroneRoom.new
@@ -37,7 +38,7 @@ class CastleGame
     @done = false
   end
 
-  def startGame
+  def startGame #Display introduction text and set Entrance as currentScene
     @currentScene = getScene('entrance')
     puts 'The night is young and the castle sleeps... And you?'
     puts 'You imagine a treasure ripe for the pillaging!'
@@ -49,7 +50,7 @@ class CastleGame
     play
   end
 
-  def play
+  def play #Loop for playing game and taking user input
     while (!@done)
     puts '...'
     puts 'What ever shall you do?'
@@ -73,14 +74,14 @@ class CastleGame
     else
       puts 'Sorry, come again?'
     end
-    senseFailures
+    senseFailures    #senseFailures will change the done variable if needed
     end
-    puts 'Game Over.'
+    puts 'Game Over.' #Once exit loop, show items player has taken
     puts 'Your spoils:'
     @player.showBag
   end
 
-  def getScene(sname)
+  def getScene(sname) #Get a scene by name
     sc = nil
     @scenes.each {|i|
       if (i.name == sname)
@@ -90,7 +91,7 @@ class CastleGame
     sc
   end
 
-  def showHelp
+  def showHelp #Help message. Game instructions and a few hints
     puts '~~~'
     puts 'COMMANDS:'
     puts 'MOVE: move dest'
@@ -136,9 +137,9 @@ class CastleGame
     end
   end
 
-  def examination(s)
-     if (s.length > 0)
-       ob = @currentScene.getObject(s[1])
+  def examination(s) #Get an object's information. The user input is passed in 
+    if (s.length > 0)#as s. Checks if object exists. If it does, displays its
+       ob = @currentScene.getObject(s[1]) #information.
        if (ob != nil)
          libCase(ob)
          ob.examine
@@ -166,9 +167,9 @@ class CastleGame
      end
   end
 
-  def move(s)
-    if (s.length > 1)
-        if (@currentScene.canMove(s[1].downcase))
+  def move(s) #Change the current Scene. User input is s. If s exists, move to
+    if (s.length > 1) #it. If s is the entrance, ask if user wishes to end 
+        if (@currentScene.canMove(s[1].downcase))#game
           dest = getScene(s[1].downcase)
           if (dest.name == 'entrance')
             puts 'Would you like to leave the castle?'
@@ -216,14 +217,14 @@ class CastleGame
     end
   end
 
-  def gift(s)
-    if (@currentScene.respond_to?('give'))
-        if (s.length == 3 && @player.inBag(s[2]))
-          if (@currentScene.give(s[1], s[2]))
-            @player.discItem(s[2])
-            dunCase
-          end
-        else
+  def gift(s) #Give an item to another character. User input is s.
+    if (@currentScene.respond_to?('give'))#If player object has the item
+        if (s.length == 3 && @player.inBag(s[2]))#and the current scene has a 
+          if (@currentScene.give(s[1], s[2]))   #give method, remove object
+            @player.discItem(s[2])              #from bag. Give is implemented
+            dunCase                             #in the scene. Also check for 
+          end                                   #a case in which current scene
+        else                                    #is the dungeon.
           puts 'Give command has form: give recipient item'
         end
       else
@@ -231,11 +232,11 @@ class CastleGame
     end
   end
 
-  def usage(s)
-     if (@currentScene.respond_to?('use'))
-        if (s.length == 3 && @player.inBag(s[2]))
-          if (@currentScene.use(s[1], s[2]))
-            @player.discItem(s[2])
+  def usage(s)#Use an item on another item. User input is s. If player has the 
+     if (@currentScene.respond_to?('use'))#item being used, and current Scene
+        if (s.length == 3 && @player.inBag(s[2]))#has a use method, remove 
+          if (@currentScene.use(s[1], s[2])) #object from bag. Also check for 
+            @player.discItem(s[2]) #a case in which current Scene is the dungeon
             doorCase(s[1])
           end
         else
@@ -246,15 +247,15 @@ class CastleGame
      end
   end
 
-  def senseFailures
-    if (@currentScene.failCase && @currentScene.checkFail)
-        puts 'A horde of guards burst into the room!'
-        puts 'You are forcibly escorted to the dungeons.'
-        @done = true
+  def senseFailures #Checks if the player has done anything that should trigger
+    if (@currentScene.failCase && @currentScene.checkFail)#a game over. Scenes
+        puts 'A horde of guards burst into the room!'#will have a field that 
+        puts 'You are forcibly escorted to the dungeons.'#tells whether or not
+        @done = true                                 #game over can occur.
     end
   end
 
-  def libCase(obj)
+  def libCase(obj) #Handling a case in which examining one item yields another.
     if (@currentScene.name == 'library')
       if (obj.name == 'desk' && !obj.looked)
         d = Diary.new
@@ -263,9 +264,9 @@ class CastleGame
     end
   end
 
-  def dunCase
-    if (@currentScene.name == 'dungeon')
-      if (@currentScene.flattered)
+  def dunCase #handling a case where accomplishing the task of knocking out the
+    if (@currentScene.name == 'dungeon')#guard allows player to find a key 
+      if (@currentScene.flattered)      #in the throne room
         tr = getScene('throne-room')
         tp = tr.getObject('paintings')
         tp.lookKey = true
@@ -273,7 +274,7 @@ class CastleGame
     end
   end
 
-  def getKey(ob)
+  def getKey(ob) #Another case where examining one object yields another
     if (@currentScene.name == 'throne-room' && ob.name == 'paintings')
       if (ob.foundKey && !(@player.inBag('key')))
         k = Key.new
@@ -282,7 +283,7 @@ class CastleGame
     end
   end
 
-  def doorCase(ob)
+  def doorCase(ob) #Case where unlocking the door yields the treasure chest item
     if (@currentScene.name == 'dungeon' && ob == 'door')
       door = @currentScene.getObject('door')
       if(door.unlocked && !@player.inBag('key'))

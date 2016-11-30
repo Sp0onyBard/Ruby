@@ -1,4 +1,4 @@
-class Item
+class Item #General item class. All objects of class Item have these methods
   attr_accessor :canTake, :name, :description
   
   def initialize(name, take)
@@ -7,11 +7,11 @@ class Item
     @canTake = take
   end
   
-  def examine
-    interaction
-  end
+  def examine #Generally, display an object's information. However,
+    interaction #behavior can vary between item objects, thus interaction
+  end         #method is defined within each class inheriting from Item
   
-  def setDes(des)
+  def setDes(des) #Change the object's description
     @description = des
   end
   

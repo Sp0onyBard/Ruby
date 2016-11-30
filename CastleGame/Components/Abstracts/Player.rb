@@ -1,13 +1,14 @@
-class Player
-  def initialize
+class Player #Player class, holds items the player collects over the duration of
+             #gameplay
+  def initialize #Initialization, set bag to an empty array
     @bag = Array.new
   end
 
-  def takeItem(item)
+  def takeItem(item) #Add an item to the bag
     @bag.push(item)
   end
 
-  def discItem(item)
+  def discItem(item) #Remove an item from the bag
     @bag.each{|i|
       if (i.name == item)
         @bag.delete(i)
@@ -15,7 +16,7 @@ class Player
       end}
   end
 
-  def showBag
+  def showBag #Display the names and information of the bag's contents
     if (@bag.length == 0)
       puts 'You have nothing.'
     else
@@ -26,7 +27,7 @@ class Player
     end
   end
 
-  def inBag(iname)
+  def inBag(iname)#Is an object of name iname in the bag? 
     ret = false
     if (@bag.length != 0)
     @bag.each {|i|
