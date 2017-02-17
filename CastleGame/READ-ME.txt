@@ -2,7 +2,7 @@ This is a short text adventure game made for a final project. Design for this
 was largely based on James Nutt's book "Make Your First Text Adventure in Ruby":
 https://jsrn.gitbooks.io/make-your-first-text-adventure-in-ruby/content/
 
-The player moves through a castle to collect items, an interacts with the
+The player moves through a castle to collect items, and interacts with the
 surrounding via short commands, such as move, examine, or use.
 Some examples of this:
 examine door
